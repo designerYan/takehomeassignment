@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>list files</title>
+       
+    </head>
+    <body>
+        
+    </body>
+    <script type="text/javascript">
+//make foo function to callback        
+function foo(response) {
+  var data = response.data;
+  console.log(data);
+    
+    //loop data.tree
+    for(var i=0; i<data.tree.length; i++){
+        console.log(data.tree[i].path);
+        
+        var ndiv = document.createElement("div");
+        ndiv.innerHTML = data.tree[i].path;
+        
+        document.body.appendChild(ndiv);
+        
+        //checked the file is folder or file
+        if(data.tree[i].type == 'tree'){
+            var sha = data.tree[i].sha;
+            var script = document.createElement('script');
+            script.src = 'https://api.github.com/repos/designerYan/Studentguardian/git/trees/'+sha+'?callback=foo';
+            script.async = false;
+            document.head.appendChild(script);
+        
+        
+        
+      }
+    }
+    
+}
+
+//make link to my respo
+var script = document.createElement('script');
+script.src = 'https://api.github.com/repos/designerYan/Studentguardian/git/trees/master?callback=foo';
+
+document.getElementsByTagName('head')[0].appendChild(script);
+</script>
+</html>

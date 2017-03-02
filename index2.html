@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <title>list files</title>
+       
+    </head>
+    <body>
+        
+    </body>
+    <script type="text/javascript">
+//make foo function to callback        
+function foo(response) {
+  var data = response.data;
+  console.log(data);
+    
+    //loop data.tree
+    for(var i=0; i<data.tree.length; i++){
+        console.log(data.tree[i].path);
+        
+        
+        
+        if(data.tree[i].type != 'tree'){
+            var sha = data.tree[i].sha;
+            var script = document.createElement('script');
+            script.src = 'https://api.github.com/repos/designerYan/Studentguardian/git/trees/' + sha + '?callback=foo';
+            var ndiv = document.createElement("div");
+            ndiv.innerHTML = data.tree[i].path;
+        
+            document.body.appendChild(ndiv);
+      }
+        
+        //checked the file is folder or file
+        if(data.tree[i].type == 'tree'){
+            var sha = data.tree[i].sha;
+            var script = document.createElement('script');
+            script.src = 'https://api.github.com/repos/designerYan/Studentguardian/git/trees/' + sha + '?callback=foo';
+            
+            var ndiv1 = document.createElement("div");
+            ndiv1.innerHTML = "-{" + data.tree[i].path + "}";
+            document.body.appendChild(ndiv1);
+            
+            
+            //check all the files inside the subtree
+            if(data.tree[i].type == 'tree'){
+            var sha = data.tree[i].sha;
+            var script = document.createElement('script');
+            script.src = 'https://api.github.com/repos/designerYan/Studentguardian/git/trees/' + sha + '?callback=foo';
+                
+            document.head.appendChild(script);
+            var ndiv2 = document.createElement("div");
+            ndiv2.innerHTML = "--{" + script[i].path + "}";  
+        
+            document.body.appendChild(ndiv2);   
+        }
+      }
+        
+        
+    }
+}
+
+ 
+        
+//make link to my respo
+var script = document.createElement('script');
+script.src = 'https://api.github.com/repos/designerYan/Studentguardian/git/trees/master?callback=foo';
+
+document.head.appendChild(script);
+        
+       
+        
+</script>
+</html>
